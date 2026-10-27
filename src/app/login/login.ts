@@ -1,0 +1,36 @@
+
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './login.html',
+  styleUrl: './login.css'
+})
+export class Login {
+  email = '';
+  password = '';
+  showPassword = false;
+  message = '';
+
+  constructor(private router: Router) {}
+
+  login(): void {
+    this.message = '';
+
+    if (!this.email || !this.password) {
+      this.message = 'Please enter your email and password.';
+      return;
+    }
+
+    this.router.navigateByUrl('/dashboard').then(success => {
+      if (!success) {
+        this.message = 'Could not open Dashboard. Please check the routes.';
+      }
+    });
+  }
+}

@@ -1,1 +1,187 @@
-/* You can add global styles to this file, and also import other style files */
+
+/* Stilet globale */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* Faqja e login-it */
+.login-page {
+  min-height: 100vh;
+  background: #f4f6f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Logoja Axians */
+.login-page .logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 24px;
+  padding: 0;
+}
+
+.login-page .logo img {
+  display: block;
+  width: 260px !important;
+  min-width: 0 !important;
+  max-width: 260px !important;
+  height: auto !important;
+  object-fit: contain;
+  flex: none;
+}
+
+/* Karta e login-it */
+.login-card {
+  width: 100%;
+  max-width: 452px;
+  padding: 34px 45px 38px;
+  background: #fff;
+  border-radius: 9px;
+  box-shadow: 0 5px 30px rgba(20, 40, 70, 0.04);
+}
+
+.login-heading {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-heading h1 {
+  color: #172b3c;
+  font-size: 22px;
+  margin: 0 0 4px;
+}
+
+.login-heading p {
+  color: #72849a;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Fushat e formularit */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  color: #172b3c;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.form-group input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: #f0f4f8;
+  color: #172b3c;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #0866d1;
+  background: #fff;
+}
+
+.form-group input::placeholder {
+  color: #8398b3;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 65px;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #61758c;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* Mesazhet e gabimit */
+.error {
+  display: block;
+  margin-top: 6px;
+  color: #c62828;
+  font-size: 12px;
+}
+
+/* Forgot password */
+.forgot-password {
+  text-align: right;
+  margin-bottom: 25px;
+}
+
+.forgot-password a {
+  color: #0066cc;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+/* Butoni Login */
+.login-button {
+  width: 100%;
+  height: 41px;
+  border: none;
+  border-radius: 4px;
+  background: #0866ce;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-button:hover:not(:disabled) {
+  background: #0054ad;
+}
+
+.login-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.message {
+  margin-top: 16px;
+  font-size: 13px;
+  text-align: center;
+  color: #172b3c;
+}
+
+/* Përshtatja për telefona */
+@media (max-width: 480px) {
+  .login-page {
+    padding: 30px 16px;
+  }
+
+  .login-card {
+    padding: 30px 24px;
+  }
+}

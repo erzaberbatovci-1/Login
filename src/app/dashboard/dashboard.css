@@ -1,0 +1,35 @@
+
+.dashboard {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: #f4f6f9;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.dashboard img {
+  width: 155px;
+  height: auto;
+}
+
+.dashboard h1 {
+  color: #0866ce;
+}
+
+.dashboard p {
+  color: #536579;
+}
+
+.dashboard button {
+  padding: 12px 32px;
+  border: none;
+  border-radius: 5px;
+  background: #0866ce;
+  color: white;
+  cursor: pointer;
+}
