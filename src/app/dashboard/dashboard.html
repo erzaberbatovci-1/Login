@@ -1,9 +1,160 @@
 
-<div class="dashboard">
-  <img src="/axians-logo.png" alt="Axians logo">
+<div class="dashboard-container">
 
-  <h1>Welcome to Axians!</h1>
-  <p>You have successfully logged in.</p>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
 
-  <button routerLink="/login">Log out</button>
+    <div class="brand">
+      <h2>WorkWave</h2>
+      <p>Powered by <strong>AXIANS</strong></p>
+    </div>
+
+    <div class="sidebar-clock">
+      <div class="clock-icon">◷</div>
+    </div>
+
+    <nav class="sidebar-menu">
+      <a class="menu-item active">
+        <span>▦</span>
+        Dashboard
+      </a>
+
+      <a class="menu-item">
+        <span>▢</span>
+        Leave Requests
+      </a>
+
+      <a class="menu-item">
+        <span>◷</span>
+        Calendar / Logs
+      </a>
+
+    
+    </nav>
+
+    <button class="logout-button" (click)="logout()">
+      <span>⇥</span>
+      Logout
+    </button>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- HEADER -->
+    <section class="welcome-card">
+      <div class="welcome-content">
+        <div class="avatar">BE</div>
+
+        <div>
+          <p class="date">NOVEMBER 3, 2026</p>
+          <h1>Good morning!</h1>
+          <p class="welcome-text">
+            Welcome to your WorkWave Dashboard.
+            Here's an overview of your leave activity.
+          </p>
+        </div>
+      </div>
+
+      <div class="leave-summary">
+        <div class="summary-item">
+          <span>☂</span>
+          15 annual days left
+        </div>
+
+        <div class="summary-item">
+          <span>✚</span>
+          17 sick days left
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP TWO CHARTS -->
+    <section class="charts-grid">
+
+      <!-- CHART 1 -->
+      <div class="chart-card">
+        <div class="chart-heading">
+          <div>
+            <h2>Leave Requests</h2>
+            <p>Monthly leave requests</p>
+          </div>
+          <span class="chart-icon blue">▥</span>
+        </div>
+
+        <div class="bar-chart">
+          <div class="bar-column" *ngFor="let item of leaveRequests">
+            <span class="bar-value">{{ item.value }}</span>
+
+            <div class="bar-track">
+              <div
+                class="bar blue-bar"
+                [style.height.%]="item.value">
+              </div>
+            </div>
+
+            <span class="bar-label">{{ item.label }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHART 2 -->
+      <div class="chart-card">
+        <div class="chart-heading">
+          <div>
+            <h2>Absence Overview</h2>
+            <p>Days taken by category</p>
+          </div>
+          <span class="chart-icon green">▥</span>
+        </div>
+
+        <div class="bar-chart">
+          <div class="bar-column" *ngFor="let item of absenceData">
+            <span class="bar-value">{{ item.value }}</span>
+
+            <div class="bar-track">
+              <div
+                class="bar green-bar"
+                [style.height.%]="item.value">
+              </div>
+            </div>
+
+            <span class="bar-label">{{ item.label }}</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- BOTTOM CHART -->
+    <section class="chart-card bottom-chart">
+
+      <div class="chart-heading">
+        <div>
+          <h2>Monthly Absence Statistics</h2>
+          <p>Overview of absence activity throughout the year</p>
+        </div>
+
+        <span class="chart-icon purple">▥</span>
+      </div>
+
+      <div class="bar-chart bottom-bars">
+        <div class="bar-column" *ngFor="let item of monthlyData">
+          <span class="bar-value">{{ item.value }}</span>
+
+          <div class="bar-track">
+            <div
+              class="bar purple-bar"
+              [style.height.%]="item.value">
+            </div>
+          </div>
+
+          <span class="bar-label">{{ item.label }}</span>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
 </div>
