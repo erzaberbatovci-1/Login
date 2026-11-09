@@ -13,24 +13,26 @@
       <div class="clock-icon">◷</div>
     </div>
 
-    <nav class="sidebar-menu">
-      <a class="menu-item active">
-        <span>▦</span>
-        Dashboard
-      </a>
-
-      <a class="menu-item">
-        <span>▢</span>
-        Leave Requests
-      </a>
-
-      <a class="menu-item">
-        <span>◷</span>
-        Calendar / Logs
-      </a>
+  <a
+  class="menu-item"
+  [class.active]="activeSection === 'dashboard'"
+  (click)="openSection('dashboard')"
+>
+  <span>▦</span>
+  Dashboard
+</a>
+<a
+  class="menu-item"
+  [class.active]="activeSection === 'users'"
+  (click)="openSection('users')"
+>
+  <span>♙</span>
+  User Management
+</a>
+    
 
     
-    </nav>
+    
 
     <button class="logout-button" (click)="logout()">
       <span>⇥</span>
@@ -41,6 +43,7 @@
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
+    <div *ngIf="activeSection === 'dashboard'">
 
     <!-- HEADER -->
     <section class="welcome-card">
@@ -155,6 +158,157 @@
       </div>
 
     </section>
+</div>
+<!-- USER MANAGEMENT -->
+
+<section *ngIf="activeSection === 'users'" class="user-management">
+
+  <div class="page-header">
+    <div>
+      <h1>User Management</h1>
+      <p>Manage and register your employees.</p>
+    </div>
+
+    <button
+      class="add-user-button"
+      (click)="addUser()"
+    >
+      + Add User
+    </button>
+  </div>
+
+  <!-- ADD USER FORM -->
+
+  <div class="user-form-card" *ngIf="showUserForm">
+
+    <h2>Add New User</h2>
+    <p>Enter the employee information below.</p>
+
+    <form #userForm="ngForm" (ngSubmit)="saveUser()">
+
+      <div class="user-form-grid">
+
+        <div class="form-group">
+          <label>First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            [(ngModel)]="newUser.firstName"
+            placeholder="Enter first name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            [(ngModel)]="newUser.lastName"
+            placeholder="Enter last name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Birthday</label>
+          <input
+            type="date"
+            name="birthday"
+            [(ngModel)]="newUser.birthday"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Department</label>
+          <select
+            name="department"
+            [(ngModel)]="newUser.department"
+            required
+          >
+            <option value="" disabled>Select department</option>
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="Finance">Finance</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Management">Management</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Profession</label>
+          <input
+            type="text"
+            name="profession"
+            [(ngModel)]="newUser.profession"
+            placeholder="Enter profession"
+            required
+          >
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="showUserForm = false"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="save-button"
+          [disabled]="userForm.invalid"
+        >
+          Save User
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- USERS TABLE -->
+
+  <div class="users-table-card">
+
+    <h2>Registered Users</h2>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Birthday</th>
+            <th>Department</th>
+            <th>Profession</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.birthday }}</td>
+            <td>{{ user.department }}</td>
+            <td>{{ user.profession }}</td>
+          </tr>
+
+          <tr *ngIf="users.length === 0">
+            <td colspan="5" class="empty-table">
+              No users registered yet.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</section>
 
   </main>
 </div>
