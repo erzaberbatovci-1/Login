@@ -1,18 +1,42 @@
 
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
+interface User {
+  firstName: string;
+  lastName: string;
+  birthday: string;
+  department: string;
+  profession: string;
+}
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    const savedUsers = localStorage.getItem('workwave-users');
+    this.users = savedUsers ? JSON.parse(savedUsers) : [];
+  }
+
+  activeSection = 'dashboard';
+  showUserForm = false;
+
+  users: User[] = [];
+
+  newUser: User = {
+    firstName: '',
+    lastName: '',
+    birthday: '',
+    department: '',
+    profession: ''
+  };
 
   leaveRequests = [
     { label: 'Jan', value: 35 },
@@ -44,6 +68,34 @@ export class Dashboard {
     { label: 'Nov', value: 75 },
     { label: 'Dec', value: 90 }
   ];
+
+  openSection(section: string): void {
+    this.activeSection = section;
+    this.showUserForm = false;
+  }
+
+  addUser(): void {
+    this.showUserForm = true;
+  }
+
+  saveUser(): void {
+    this.users.push({ ...this.newUser });
+
+    localStorage.setItem(
+      'workwave-users',
+      JSON.stringify(this.users)
+    );
+
+    this.newUser = {
+      firstName: '',
+      lastName: '',
+      birthday: '',
+      department: '',
+      profession: ''
+    };
+
+    this.showUserForm = false;
+  }
 
   logout(): void {
     this.router.navigateByUrl('/login');
