@@ -243,7 +243,7 @@
             name="profession"
             [(ngModel)]="newUser.profession"
             placeholder="Enter profession"
-            required
+       
           >
         </div>
 
@@ -285,6 +285,7 @@
             <th>Birthday</th>
             <th>Department</th>
             <th>Profession</th>
+            <th>Action</th>
           </tr>
         </thead>
 
@@ -295,11 +296,25 @@
             <td>{{ user.birthday }}</td>
             <td>{{ user.department }}</td>
             <td>{{ user.profession }}</td>
+            <td> <button
+              type="button"
+             class="edit-button"
+             (click)="editUser(user)">
+                 Edit
+              </button>
+                  <button
+                type="button"
+                class="delete-button"
+                (click)="deleteUser(user)">
+                  Delete
+                </button>
+           </td>
           </tr>
 
           <tr *ngIf="users.length === 0">
             <td colspan="5" class="empty-table">
               No users registered yet.
+
             </td>
           </tr>
         </tbody>

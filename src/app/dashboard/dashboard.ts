@@ -20,13 +20,9 @@ interface User {
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
-  constructor(private router: Router) {
-    const savedUsers = localStorage.getItem('workwave-users');
-    this.users = savedUsers ? JSON.parse(savedUsers) : [];
-  }
-
   activeSection = 'dashboard';
   showUserForm = false;
+  editingUserIndex = -1;
 
   users: User[] = [];
 
@@ -37,6 +33,11 @@ export class Dashboard {
     department: '',
     profession: ''
   };
+
+  constructor(private router: Router) {
+    const savedUsers = localStorage.getItem('workwave-users');
+    this.users = savedUsers ? JSON.parse(savedUsers) : [];
+  }
 
   leaveRequests = [
     { label: 'Jan', value: 35 },
@@ -75,11 +76,25 @@ export class Dashboard {
   }
 
   addUser(): void {
+    this.editingUserIndex = -1;
+
+    this.newUser = {
+      firstName: '',
+      lastName: '',
+      birthday: '',
+      department: '',
+      profession: ''
+    };
+
     this.showUserForm = true;
   }
 
   saveUser(): void {
-    this.users.push({ ...this.newUser });
+    if (this.editingUserIndex !== -1) {
+      this.users[this.editingUserIndex] = { ...this.newUser };
+    } else {
+      this.users.push({ ...this.newUser });
+    }
 
     localStorage.setItem(
       'workwave-users',
@@ -94,7 +109,38 @@ export class Dashboard {
       profession: ''
     };
 
+    this.editingUserIndex = -1;
     this.showUserForm = false;
+  }
+
+  editUser(user: User): void {
+    this.newUser = { ...user };
+    this.editingUserIndex = this.users.indexOf(user);
+    this.showUserForm = true;
+  }
+
+  deleteUser(user: User): void {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this user?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.users = this.users.filter(
+      existingUser => existingUser !== user
+    );
+
+    localStorage.setItem(
+      'workwave-users',
+      JSON.stringify(this.users)
+    );
+
+    if (this.editingUserIndex !== -1) {
+      this.editingUserIndex = -1;
+      this.showUserForm = false;
+    }
   }
 
   logout(): void {
