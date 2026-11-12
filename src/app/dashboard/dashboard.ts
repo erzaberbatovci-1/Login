@@ -21,8 +21,9 @@ interface User {
 })
 export class Dashboard {
   constructor(private router: Router) {
-  const users = localStorage.getItem('users');
-  this.users = users ? JSON.parse(users) : [];  }
+    const users = localStorage.getItem('users');
+    this.users = users ? JSON.parse(users) : [];
+  }
 
   activeSection = 'dashboard';
   showUserForm = false;
@@ -75,68 +76,80 @@ export class Dashboard {
   }
 
   addUser(): void {
+    this.editingUser = null;
+
+    this.newUser = {
+      firstName: '',
+      lastName: '',
+      birthday: '',
+      department: '',
+      profession: ''
+    };
+
     this.showUserForm = true;
   }
 
-saveUser(): void {
-  if (
-    !this.newUser.firstName.trim() ||
-    !this.newUser.lastName.trim() ||
-    !this.newUser.birthday ||
-    !this.newUser.department.trim()
-  ) {
-    alert('Please fill in all required fields!');
-    return;
-  }
-
-  if (this.editingUser) {
-    const index = this.users.indexOf(this.editingUser);
-
-    if (index !== -1) {
-      this.users[index] = { ...this.newUser };
+  saveUser(): void {
+    if (
+      !this.newUser.firstName.trim() ||
+      !this.newUser.lastName.trim() ||
+      !this.newUser.birthday ||
+      !this.newUser.department.trim()
+    ) {
+      alert('Please fill in all required fields!');
+      return;
     }
-  } else {
-    this.users.push({ ...this.newUser });
+
+    if (this.editingUser) {
+      const index = this.users.indexOf(this.editingUser);
+
+      if (index !== -1) {
+        this.users[index] = { ...this.newUser };
+      }
+    } else {
+      this.users.push({ ...this.newUser });
+    }
+
+    localStorage.setItem('users', JSON.stringify(this.users));
+
+    this.newUser = {
+      firstName: '',
+      lastName: '',
+      birthday: '',
+      department: '',
+      profession: ''
+    };
+
+    this.editingUser = null;
+    this.showUserForm = false;
   }
 
-  localStorage.setItem(
-    'users',
-    JSON.stringify(this.users)
-  );
+  editUser(user: User): void {
+    this.editingUser = user;
+    this.newUser = { ...user };
+    this.showUserForm = true;
+  }
 
-  this.newUser = {
-    firstName: '',
-    lastName: '',
-    birthday: '',
-    department: '',
-    profession: ''
-  };
+  deleteUser(user: User): void {
+    const confirmed = confirm(
+      'Are you sure you want to delete this user?'
+    );
 
-  this.editingUser = null;
-  this.showUserForm = false;
-}
+    if (!confirmed) {
+      return;
+    }
+
+    if (this.editingUser === user) {
+      this.editingUser = null;
+      this.showUserForm = false;
+    }
+
+    this.users = this.users.filter(u => u !== user);
+
+    localStorage.setItem('users', JSON.stringify(this.users));
+  }
 
   logout(): void {
     this.router.navigateByUrl('/login');
   }
-  editUser(user: User): void {
-  this.editingUser = user;
-  this.newUser = { ...user };
-  this.showUserForm = true;
-}
-
-deleteUser(user: User): void {
-  const confirmed = confirm(
-    'Are you sure you want to delete this user?'
-  );
-
-  if (confirmed) {
-    this.users = this.users.filter(u => u !== user);
-
-    localStorage.setItem(
-      'users',
-      JSON.stringify(this.users)
-    );
-  }
-}
 }
