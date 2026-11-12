@@ -21,12 +21,12 @@ interface User {
 })
 export class Dashboard {
   constructor(private router: Router) {
-    const savedUsers = localStorage.getItem('workwave-users');
-    this.users = savedUsers ? JSON.parse(savedUsers) : [];
-  }
+  const users = localStorage.getItem('users');
+  this.users = users ? JSON.parse(users) : [];  }
 
   activeSection = 'dashboard';
   showUserForm = false;
+  editingUser: User | null = null;
 
   users: User[] = [];
 
@@ -78,26 +78,65 @@ export class Dashboard {
     this.showUserForm = true;
   }
 
-  saveUser(): void {
-    this.users.push({ ...this.newUser });
-
-    localStorage.setItem(
-      'workwave-users',
-      JSON.stringify(this.users)
-    );
-
-    this.newUser = {
-      firstName: '',
-      lastName: '',
-      birthday: '',
-      department: '',
-      profession: ''
-    };
-
-    this.showUserForm = false;
+saveUser(): void {
+  if (
+    !this.newUser.firstName.trim() ||
+    !this.newUser.lastName.trim() ||
+    !this.newUser.birthday ||
+    !this.newUser.department.trim()
+  ) {
+    alert('Please fill in all required fields!');
+    return;
   }
+
+  if (this.editingUser) {
+    const index = this.users.indexOf(this.editingUser);
+
+    if (index !== -1) {
+      this.users[index] = { ...this.newUser };
+    }
+  } else {
+    this.users.push({ ...this.newUser });
+  }
+
+  localStorage.setItem(
+    'users',
+    JSON.stringify(this.users)
+  );
+
+  this.newUser = {
+    firstName: '',
+    lastName: '',
+    birthday: '',
+    department: '',
+    profession: ''
+  };
+
+  this.editingUser = null;
+  this.showUserForm = false;
+}
 
   logout(): void {
     this.router.navigateByUrl('/login');
   }
+  editUser(user: User): void {
+  this.editingUser = user;
+  this.newUser = { ...user };
+  this.showUserForm = true;
+}
+
+deleteUser(user: User): void {
+  const confirmed = confirm(
+    'Are you sure you want to delete this user?'
+  );
+
+  if (confirmed) {
+    this.users = this.users.filter(u => u !== user);
+
+    localStorage.setItem(
+      'users',
+      JSON.stringify(this.users)
+    );
+  }
+}
 }

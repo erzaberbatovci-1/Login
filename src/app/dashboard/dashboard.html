@@ -1,9 +1,8 @@
-
+```html
 <div class="dashboard-container">
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-
     <div class="brand">
       <h2>WorkWave</h2>
       <p>Powered by <strong>AXIANS</strong></p>
@@ -13,302 +12,276 @@
       <div class="clock-icon">◷</div>
     </div>
 
-  <a
-  class="menu-item"
-  [class.active]="activeSection === 'dashboard'"
-  (click)="openSection('dashboard')"
->
-  <span>▦</span>
-  Dashboard
-</a>
-<a
-  class="menu-item"
-  [class.active]="activeSection === 'users'"
-  (click)="openSection('users')"
->
-  <span>♙</span>
-  User Management
-</a>
-    
+    <a class="menu-item"
+       [class.active]="activeSection === 'dashboard'"
+       (click)="openSection('dashboard')">
+      <span>▦</span>
+      Dashboard
+    </a>
 
-    
-    
+    <a class="menu-item"
+       [class.active]="activeSection === 'users'"
+       (click)="openSection('users')">
+      <span>♙</span>
+      User Management
+    </a>
 
     <button class="logout-button" (click)="logout()">
       <span>⇥</span>
       Logout
     </button>
-
   </aside>
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
+
+    <!-- DASHBOARD SECTION -->
     <div *ngIf="activeSection === 'dashboard'">
 
-    <!-- HEADER -->
-    <section class="welcome-card">
-      <div class="welcome-content">
-        <div class="avatar">BE</div>
-
-        <div>
-          <p class="date">NOVEMBER 3, 2026</p>
-          <h1>Good morning!</h1>
-          <p class="welcome-text">
-            Welcome to your WorkWave Dashboard.
-            Here's an overview of your leave activity.
-          </p>
-        </div>
-      </div>
-
-      <div class="leave-summary">
-        <div class="summary-item">
-          <span>☂</span>
-          15 annual days left
+      <section class="welcome-card">
+        <div class="welcome-content">
+          <div class="avatar">BE</div>
+          <div>
+            <p class="date">NOVEMBER 3, 2026</p>
+            <h1>Good morning!</h1>
+            <p class="welcome-text">
+              Welcome to your WorkWave Dashboard.
+              Here's an overview of your leave activity.
+            </p>
+          </div>
         </div>
 
-        <div class="summary-item">
-          <span>✚</span>
-          17 sick days left
+        <div class="leave-summary">
+          <div class="summary-item">
+            <span>☂</span>
+            15 annual days left
+          </div>
+          <div class="summary-item">
+            <span>✚</span>
+            17 sick days left
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- TOP TWO CHARTS -->
-    <section class="charts-grid">
+      <!-- TOP TWO CHARTS -->
+      <section class="charts-grid">
 
-      <!-- CHART 1 -->
-      <div class="chart-card">
+        <div class="chart-card">
+          <div class="chart-heading">
+            <div>
+              <h2>Leave Requests</h2>
+              <p>Monthly leave requests</p>
+            </div>
+            <span class="chart-icon blue">▥</span>
+          </div>
+
+          <div class="bar-chart">
+            <div class="bar-column" *ngFor="let item of leaveRequests">
+              <span class="bar-value">{{ item.value }}</span>
+              <div class="bar-track">
+                <div class="bar blue-bar"
+                     [style.height.%]="item.value">
+                </div>
+              </div>
+              <span class="bar-label">{{ item.label }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-heading">
+            <div>
+              <h2>Absence Overview</h2>
+              <p>Days taken by category</p>
+            </div>
+            <span class="chart-icon green">▥</span>
+          </div>
+
+          <div class="bar-chart">
+            <div class="bar-column" *ngFor="let item of absenceData">
+              <span class="bar-value">{{ item.value }}</span>
+              <div class="bar-track">
+                <div class="bar green-bar"
+                     [style.height.%]="item.value">
+                </div>
+              </div>
+              <span class="bar-label">{{ item.label }}</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- BOTTOM CHART -->
+      <section class="chart-card bottom-chart">
         <div class="chart-heading">
           <div>
-            <h2>Leave Requests</h2>
-            <p>Monthly leave requests</p>
+            <h2>Monthly Absence Statistics</h2>
+            <p>Overview of absence activity throughout the year</p>
           </div>
-          <span class="chart-icon blue">▥</span>
+          <span class="chart-icon purple">▥</span>
         </div>
 
-        <div class="bar-chart">
-          <div class="bar-column" *ngFor="let item of leaveRequests">
+        <div class="bar-chart bottom-bars">
+          <div class="bar-column" *ngFor="let item of monthlyData">
             <span class="bar-value">{{ item.value }}</span>
-
             <div class="bar-track">
-              <div
-                class="bar blue-bar"
-                [style.height.%]="item.value">
+              <div class="bar purple-bar"
+                   [style.height.%]="item.value">
               </div>
             </div>
-
             <span class="bar-label">{{ item.label }}</span>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- CHART 2 -->
-      <div class="chart-card">
-        <div class="chart-heading">
-          <div>
-            <h2>Absence Overview</h2>
-            <p>Days taken by category</p>
-          </div>
-          <span class="chart-icon green">▥</span>
-        </div>
+    </div>
 
-        <div class="bar-chart">
-          <div class="bar-column" *ngFor="let item of absenceData">
-            <span class="bar-value">{{ item.value }}</span>
+    <!-- USER MANAGEMENT -->
+    <section *ngIf="activeSection === 'users'"
+             class="user-management">
 
-            <div class="bar-track">
-              <div
-                class="bar green-bar"
-                [style.height.%]="item.value">
-              </div>
-            </div>
-
-            <span class="bar-label">{{ item.label }}</span>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- BOTTOM CHART -->
-    <section class="chart-card bottom-chart">
-
-      <div class="chart-heading">
+      <div class="page-header">
         <div>
-          <h2>Monthly Absence Statistics</h2>
-          <p>Overview of absence activity throughout the year</p>
+          <h1>User Management</h1>
+          <p>Manage and register your employees.</p>
         </div>
 
-        <span class="chart-icon purple">▥</span>
+        <button class="add-user-button" (click)="addUser()">
+          + Add User
+        </button>
       </div>
 
-      <div class="bar-chart bottom-bars">
-        <div class="bar-column" *ngFor="let item of monthlyData">
-          <span class="bar-value">{{ item.value }}</span>
+      <!-- ADD USER FORM -->
+      <div class="user-form-card" *ngIf="showUserForm">
 
-          <div class="bar-track">
-            <div
-              class="bar purple-bar"
-              [style.height.%]="item.value">
+        <h2>
+          {{ editingUser ? 'Edit User' : 'Add New User' }}
+        </h2>
+        <p>Enter the employee information below.</p>
+
+        <form #userForm="ngForm" (ngSubmit)="saveUser()">
+
+          <div class="user-form-grid">
+
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text"
+                     name="firstName"
+                     [(ngModel)]="newUser.firstName"
+                     placeholder="Enter first name"
+                     required>
             </div>
+
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text"
+                     name="lastName"
+                     [(ngModel)]="newUser.lastName"
+                     placeholder="Enter last name"
+                     required>
+            </div>
+
+            <div class="form-group">
+              <label>Birthday</label>
+              <input type="date"
+                     name="birthday"
+                     [(ngModel)]="newUser.birthday"
+                     required>
+            </div>
+
+            <div class="form-group">
+              <label>Department</label>
+              <select name="department"
+                      [(ngModel)]="newUser.department"
+                      required>
+                <option value="" disabled>Select department</option>
+                <option value="IT">IT</option>
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Management">Management</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Profession</label>
+              <input type="text"
+                     name="profession"
+                     [(ngModel)]="newUser.profession"
+                     placeholder="Enter profession"
+                     required>
+            </div>
+
           </div>
 
-          <span class="bar-label">{{ item.label }}</span>
+          <div class="form-actions">
+            <button type="button"
+                    class="cancel-button"
+                    (click)="showUserForm = false">
+              Cancel
+            </button>
+
+            <button type="submit"
+                    class="save-button"
+                    [disabled]="userForm.invalid">
+        {{ editingUser ? 'Update User' : 'Save User' }}          
+   </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- USERS TABLE -->
+      <div class="users-table-card">
+        <h2>Registered Users</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Birthday</th>
+                <th>Department</th>
+                <th>Profession</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.birthday }}</td>
+                <td>{{ user.department }}</td>
+                <td>{{ user.profession }}</td>
+                <td>
+                  <button type="button"
+                          class="edit-button"
+                          (click)="editUser(user)">
+                    Edit
+                  </button>
+
+                  <button type="button"
+                          class="delete-button"
+                          (click)="deleteUser(user)">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+
+              <tr *ngIf="users.length === 0">
+                <td colspan="6" class="empty-table">
+                  No users registered yet.
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
     </section>
-</div>
-<!-- USER MANAGEMENT -->
-
-<section *ngIf="activeSection === 'users'" class="user-management">
-
-  <div class="page-header">
-    <div>
-      <h1>User Management</h1>
-      <p>Manage and register your employees.</p>
-    </div>
-
-    <button
-      class="add-user-button"
-      (click)="addUser()"
-    >
-      + Add User
-    </button>
-  </div>
-
-  <!-- ADD USER FORM -->
-
-  <div class="user-form-card" *ngIf="showUserForm">
-
-    <h2>Add New User</h2>
-    <p>Enter the employee information below.</p>
-
-    <form #userForm="ngForm" (ngSubmit)="saveUser()">
-
-      <div class="user-form-grid">
-
-        <div class="form-group">
-          <label>First Name</label>
-          <input
-            type="text"
-            name="firstName"
-            [(ngModel)]="newUser.firstName"
-            placeholder="Enter first name"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Last Name</label>
-          <input
-            type="text"
-            name="lastName"
-            [(ngModel)]="newUser.lastName"
-            placeholder="Enter last name"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Birthday</label>
-          <input
-            type="date"
-            name="birthday"
-            [(ngModel)]="newUser.birthday"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Department</label>
-          <select
-            name="department"
-            [(ngModel)]="newUser.department"
-            required
-          >
-            <option value="" disabled>Select department</option>
-            <option value="IT">IT</option>
-            <option value="HR">HR</option>
-            <option value="Finance">Finance</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Management">Management</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Profession</label>
-          <input
-            type="text"
-            name="profession"
-            [(ngModel)]="newUser.profession"
-            placeholder="Enter profession"
-            
-          >
-        </div>
-
-      </div>
-
-      <div class="form-actions">
-        <button
-          type="button"
-          class="cancel-button"
-          (click)="showUserForm = false"
-        >
-          Cancel
-        </button>
-
-        <button
-          type="submit"
-          class="save-button"
-          [disabled]="userForm.invalid"
-        >
-          Save User
-        </button>
-      </div>
-
-    </form>
-  </div>
-
-  <!-- USERS TABLE -->
-
-  <div class="users-table-card">
-
-    <h2>Registered Users</h2>
-
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Birthday</th>
-            <th>Department</th>
-            <th>Profession</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let user of users">
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.lastName }}</td>
-            <td>{{ user.birthday }}</td>
-            <td>{{ user.department }}</td>
-            <td>{{ user.profession }}</td>
-          </tr>
-
-          <tr *ngIf="users.length === 0">
-            <td colspan="5" class="empty-table">
-              No users registered yet.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-  </div>
-
-</section>
 
   </main>
 </div>
