@@ -20,9 +20,14 @@ interface User {
   styleUrl: './dashboard.css'
 })
 export class Dashboard {
+  constructor(private router: Router) {
+    const users = localStorage.getItem('users');
+    this.users = users ? JSON.parse(users) : [];
+  }
+
   activeSection = 'dashboard';
   showUserForm = false;
-  editingUserIndex = -1;
+  editingUser: User | null = null;
 
   users: User[] = [];
 
@@ -33,11 +38,6 @@ export class Dashboard {
     department: '',
     profession: ''
   };
-
-  constructor(private router: Router) {
-    const savedUsers = localStorage.getItem('workwave-users');
-    this.users = savedUsers ? JSON.parse(savedUsers) : [];
-  }
 
   leaveRequests = [
     { label: 'Jan', value: 35 },
@@ -76,7 +76,7 @@ export class Dashboard {
   }
 
   addUser(): void {
-    this.editingUserIndex = -1;
+    this.editingUser = null;
 
     this.newUser = {
       firstName: '',
@@ -90,16 +90,27 @@ export class Dashboard {
   }
 
   saveUser(): void {
-    if (this.editingUserIndex !== -1) {
-      this.users[this.editingUserIndex] = { ...this.newUser };
+    if (
+      !this.newUser.firstName.trim() ||
+      !this.newUser.lastName.trim() ||
+      !this.newUser.birthday ||
+      !this.newUser.department.trim()
+    ) {
+      alert('Please fill in all required fields!');
+      return;
+    }
+
+    if (this.editingUser) {
+      const index = this.users.indexOf(this.editingUser);
+
+      if (index !== -1) {
+        this.users[index] = { ...this.newUser };
+      }
     } else {
       this.users.push({ ...this.newUser });
     }
 
-    localStorage.setItem(
-      'workwave-users',
-      JSON.stringify(this.users)
-    );
+    localStorage.setItem('users', JSON.stringify(this.users));
 
     this.newUser = {
       firstName: '',
@@ -109,18 +120,18 @@ export class Dashboard {
       profession: ''
     };
 
-    this.editingUserIndex = -1;
+    this.editingUser = null;
     this.showUserForm = false;
   }
 
   editUser(user: User): void {
+    this.editingUser = user;
     this.newUser = { ...user };
-    this.editingUserIndex = this.users.indexOf(user);
     this.showUserForm = true;
   }
 
   deleteUser(user: User): void {
-    const confirmed = window.confirm(
+    const confirmed = confirm(
       'Are you sure you want to delete this user?'
     );
 
@@ -128,19 +139,14 @@ export class Dashboard {
       return;
     }
 
-    this.users = this.users.filter(
-      existingUser => existingUser !== user
-    );
-
-    localStorage.setItem(
-      'workwave-users',
-      JSON.stringify(this.users)
-    );
-
-    if (this.editingUserIndex !== -1) {
-      this.editingUserIndex = -1;
+    if (this.editingUser === user) {
+      this.editingUser = null;
       this.showUserForm = false;
     }
+
+    this.users = this.users.filter(u => u !== user);
+
+    localStorage.setItem('users', JSON.stringify(this.users));
   }
 
   logout(): void {
